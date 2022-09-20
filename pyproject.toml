@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "lxzbiotools"
+version = "0.5.0"
+description = "Xingze Li's Bioinformatics Analysis Scripts"
+authors = ["Xingze_Li <lixingzee@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+typer = "^0.6.1"
+pandas = "^1.4.4"
+pathlib = "^1.0.1"
+rich = "^12.5.1"
+openpyxl = "^3.0.10"
+biopython = "^1.79"
+matplotlib = "^3.6.0"
+
+[tool.poetry.scripts]
+lxzbiotools = 'lxzbiotools.lxzbiotools:app'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "tsinghua"
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
+default = true
