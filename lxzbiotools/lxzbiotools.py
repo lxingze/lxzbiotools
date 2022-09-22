@@ -6,8 +6,8 @@ import math
 import hashlib
 import pandas as pd
 import subprocess
-from rich.progress import track
 from rich import print
+from rich.progress import track
 from typing import List, Union, Optional, NamedTuple
 from openpyxl import load_workbook
 from openpyxl.workbook.workbook import Workbook
@@ -18,7 +18,7 @@ from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 from pathlib import Path
-from utils import codon_table, fasta_dict, get_genome_stats, write_output_stats, plot_scaffold_dist
+from lxzbiotools.utils import codon_table, fasta_dict, get_genome_stats, write_output_stats, plot_scaffold_dist
 
 
 # start=time.perf_counter()
@@ -360,7 +360,7 @@ def genome_stats(infile: List[str] = typer.Option(...,"-i","--infile",
     append = 1
 
     # For each genome get the stats.
-    for genome in track(infile):
+    for genome in infile:
         genome_name = os.path.split(genome)[1]
 
         if genome_name in genomes_dict:
@@ -378,13 +378,63 @@ def genome_stats(infile: List[str] = typer.Option(...,"-i","--infile",
     write_output_stats(genomes_dict, genome_size, num_longest, out_fasta)
 
     out_plots = outprefix + '.pdf'
-    out_plots = outprefix + '.png'
     plot_scaffold_dist(genomes_dict, out_plots)
 
+@app.command()
+def movefile(file_dir: Path = typer.Argument(...,
+                                    help="input your target files directory"),
+             output_dir: Path = typer.Argument(...,
+                                    help="output directory name"),
+             dir_nums: int = typer.Argument(...,
+                                    help="number of folders you want to create "),
+             prefix: str = typer.Argument("",
+                                    help="Folder prefix name, defaults to 1,2,3... 100")):
+    'Randomly allocate files to a specified number of folders'
+    file_dir = os.path.abspath(file_dir)
+    folderPath = os.path.abspath(output_dir)
+    sort_folder_number = [x for x in range(1,dir_nums+1)]
+    for num in sort_folder_number:
+        addfolder = prefix + str(num)
+        new_folder_path = os.path.join(folderPath,addfolder) #new_folder_path is ‘folderPath\number'
+        if not os.path.exists(new_folder_path):
+            os.makedirs(new_folder_path)
+            print("new a floder named "+str(num)+'at the path of '+ new_folder_path)
 
+    #the taget file list
+    file_list = os.listdir(file_dir)
+    folderNumber = 0
+    print('there are '+str(len(file_list))+' files at the path of '+file_dir)
+    for i in range(0,len(file_list)):
+        old_file_path = os.path.join(file_dir,file_list[i])
+        if os.path.isdir(old_file_path):
+            '''if the path is a folder,program will pass it'''
+            print('file does not exist ,path=' + old_file_path+' it is a dir' )
+            pass
+        elif not os.path.exists(old_file_path):
+            '''if the path does not exist,program will pass it'''
+            print('file does not exist ,path='+old_file_path)
+            pass
+        else:
+            '''define the number,it decides how many files each directory process'''
+            number = math.ceil(len(file_list)/dir_nums)
+            if(i%number == 0):
+                folderNumber +=1
+                addfile = prefix + str(folderNumber)
+            new_file_path = os.path.join(folderPath,'%s'%(addfile))
+            print(new_file_path)
+            if not os.path.exists(new_file_path):
+                print('not exist path:'+new_file_path)
+                break
+            shutil.move(old_file_path,new_file_path)
+            print('success move file from '+ old_file_path +' to '+new_file_path)
+    print('If you have any questions, please contact [bold magenta]lixingzee@gmail.com[/bold magenta]')
+    print('[bold cyan]Thank you for using.[/bold cyan]')
+
+
+    
 
 # end=time.perf_counter()
-# print('Running time: %s Seconds'%(end-start)) #运行时间    
+# print('Running time: %s Seconds'%(end-start))   
 
 if __name__ == "__main__":
     app()

@@ -10,7 +10,12 @@ Obviously, it is not perfect, so it will be updated later until it is strong eno
 pip3 install lxzbiotools
 ```
 
+## Version update content
++ *2022-09-22* version **0.5.3** add **movefile** (Randomly allocate files to a specified number of folders)
+
+
 ## Use
+
 
 ```bash
 $ python3 ~/lxzbiotools/lxzbiotools/lxzbiotools.py  --help
@@ -19,6 +24,7 @@ $ python3 ~/lxzbiotools/lxzbiotools/lxzbiotools.py  --help
 
  Xingze Li's bioinformatics analysis scripts.
  emali: lixingzee@gmail.com
+
 
 ╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────╮
 │ --install-completion        [bash|zsh|fish|powershell|pwsh]  Install completion for the specified shell.        │
