@@ -1,52 +1,53 @@
-## Introduction
+## Project description
 
-**lxzbiotools** contains some bioinformation data processing scripts.
+**lxzbiotools** is a bioinformatics data processing tools.
 
-Obviously, it is not perfect, so it will be updated later until it is strong enough
+## Features
 
-## Install
++ `cds2pep`         Convert cds file to pep 
++ `excel2txt`       Convert file format form excel to txt
++ `fa2fq`           Change fasta file to fastq file
++ `fq2fa`           Change fastq file to fasta file
++ `genstats`        One or more genome informatics statistics
++ `gfa2fa`          Convert gfa file to fasta file
++ `gff`             Simplify gff3 file for WGD event analysis
++ `length`          Get the length of each sequences
++ `rds`             Read a multi-FASTA file sequence and remove duplicates
++ `parallel`        Parallelized running tasks
++ `extseq`          Extract sequences by sequence name or keyword 
++ `m2ofa`           Convert multi-line fasta to one-line fasta           
++ `movefile`        Randomly allocate files to a specified number of folders 
+
+## QuickStart
+
+
+### Install
 
 ```
 pip3 install lxzbiotools
 ```
 
-## Version update content
-+ *2022-09-22* version **0.5.3** add **movefile** (Randomly allocate files to a specified number of folders)
-
-
-## Use
-
-
-```bash
-$ python3 ~/lxzbiotools/lxzbiotools/lxzbiotools.py  --help
-
- Usage: lxzbiotools.py [OPTIONS] COMMAND [ARGS]...
-
- Xingze Li's bioinformatics analysis scripts.
- emali: lixingzee@gmail.com
-
-
-╭─ Options ───────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ --install-completion        [bash|zsh|fish|powershell|pwsh]  Install completion for the specified shell.        │
-│                                                              [default: None]                                    │
-│ --show-completion           [bash|zsh|fish|powershell|pwsh]  Show completion for the specified shell, to copy   │
-│                                                              it or customize the installation.                  │
-│                                                              [default: None]                                    │
-│ --help                                                       Show this message and exit.                        │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ──────────────────────────────────────────────────────────────────────────────────────────────────────╮
-│ cds2pep         Convert cds file to pep file                                                                    │
-│ excel2txt       Convert excel file to txt file                                                                  │
-│ fa2fq           Convert a fasta file to a fastq file                                                            │
-│ fq2fa           Convert a fastq file to a fasta file                                                            │
-│ genstats        single or multiple genome information statistics                                                │
-│ gfa2fa          Convert gfa file to fasta file                                                                  │
-│ gff             Simplify gff3 file for WGD event analysis                                                       │
-│ len             Get the length of each sequence                                                                 │
-│ rds             Read a multi-FASTA file sequence and remove duplicates (by MD5 hash)                            │
-│ run             Parallelized running tasks                                                                      │
-│ seq             Extract sequences by sequence name or keyword                                                   │
-│ tolf            Convert multi-line fasta to one-line fasta                                                      │
-╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+### Update
 
 ```
+pip3 install -U lxzbiotools
+```
+
+### Use
+
+```bash
+$ lxzbiotools --help
+
+ Usage: lxzbiotools.py [OPTIONS] COMMAND [ARGS]...
+```
+
+
+## Version update content
++ *2022-09-22* version **0.5.4** add **movefile** (Randomly allocate files to a specified number of folders)
+
+## Bug report 
+
++ Issues and bugs report to **lixingzee@gmail.com**
+
++ github: *https://github.com/lxingze/lxzbiotools*
+

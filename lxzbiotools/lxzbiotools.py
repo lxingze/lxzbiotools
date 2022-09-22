@@ -24,7 +24,7 @@ from lxzbiotools.utils import codon_table, fasta_dict, get_genome_stats, write_o
 # start=time.perf_counter()
 app=typer.Typer(help="Xingze Li's bioinformatics analysis scripts. \n\n\n emali: lixingzee@gmail.com")
 
-@app.command("tolf")
+@app.command("m2ofa")
 def to_one_line_fasta(inf: Path = typer.Argument(...,
                                                  help="input fasta file"),
                       outf: Path = typer.Argument(...,
@@ -45,7 +45,7 @@ def to_one_line_fasta(inf: Path = typer.Argument(...,
     inf.close()
     outf.close()
 
-@app.command("seq")
+@app.command('extseq')
 def extract_target_seq(inf: Path = typer.Argument(...,
                                                   help="input fasta file"), 
                        outf: Path = typer.Argument(...,
@@ -175,7 +175,7 @@ def excel2txt(input: Path,
     df = pd.read_excel(input, header=None)		
     df.to_csv(output, header=None, sep='\t', index=False)	
 
-@app.command('len')
+@app.command('length')
 def get_fasta_len(fasta: Path,
                   lenf: Path):
     'Get the length of each sequence'
@@ -267,7 +267,7 @@ def parse_gff(gff: Path,
 
 
 
-@app.command('run')
+@app.command('parallel')
 def parallel_run(cmd_path, 
                  thread, 
                  stdout=None, 
@@ -429,7 +429,6 @@ def movefile(file_dir: Path = typer.Argument(...,
             print('success move file from '+ old_file_path +' to '+new_file_path)
     print('If you have any questions, please contact [bold magenta]lixingzee@gmail.com[/bold magenta]')
     print('[bold cyan]Thank you for using.[/bold cyan]')
-
 
     
 
