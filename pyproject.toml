@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "lxzbiotools"
-version = "0.5.4"
+version = "0.5.5"
 description = "Xingze Li's Bioinformatics Analysis Tools"
 authors = ["Xingze_Li <lixingzee@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.6"
 typer = "^0.6.1"
 pandas = "^1.4.4"
 pathlib = "^1.0.1"

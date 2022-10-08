@@ -4,6 +4,7 @@ import time
 import typer
 import math
 import hashlib
+import shutil
 import pandas as pd
 import subprocess
 from rich import print
@@ -18,7 +19,7 @@ from Bio.Seq import Seq
 from Bio import SeqIO
 from Bio.SeqRecord import SeqRecord
 from pathlib import Path
-from lxzbiotools.utils import codon_table, fasta_dict, get_genome_stats, write_output_stats, plot_scaffold_dist
+from lxzbiotools.utils import *
 
 
 # start=time.perf_counter()
@@ -120,7 +121,7 @@ def fa2fq(fa: Path = typer.Argument(...,
 
 
 @app.command()
-def cds2pep(cds_input: Path  = typer.Argument(...,
+def cds2pep(cds_input: Path = typer.Argument(...,
                                               help="input coding sequence(CDS) file"),
             cds_output: Path = typer.Argument(...),
             pep_output: Path = typer.Argument(...,
@@ -176,13 +177,14 @@ def excel2txt(input: Path,
     df.to_csv(output, header=None, sep='\t', index=False)	
 
 @app.command('length')
-def get_fasta_len(fasta: Path,
-                  lenf: Path):
+def get_fasta_len(fasta_file: Path = typer.Argument(...,
+                                              help="input fasta file"),
+                  len_file: Path = typer.Argument(...,
+                                              help="ouput lens file")):
     'Get the length of each sequence'
     fasta_dict = OrderedDict()
-    gene_count = {}
-    handle = open(fasta, "r")
-    len_file = open(lenf, "w")
+    handle = open(fasta_file, "r")
+    lenf = open(len_file, "w")
     active_sequence_name = ""
     for line in handle:
         line = line.strip()
@@ -196,10 +198,10 @@ def get_fasta_len(fasta: Path,
             continue
         sequence = line
         fasta_dict[active_sequence_name] += len(sequence)
-    for chrom,lens in fasta_dict.items():
-        print("{chrom}\t{lens}\t{count}".format(\
-                chrom=chrom,lens=lens,count=gene_count.get(chrom,0)), file=len_file)
-    len_file.close()    
+    print("seqs\tlens", file=lenf)
+    for chrom,lens in track(fasta_dict.items()):
+        print(f"{chrom}\t{lens}", file=lenf)
+    lenf.close()    
     handle.close()
     return fasta_dict
 
@@ -430,10 +432,38 @@ def movefile(file_dir: Path = typer.Argument(...,
     print('If you have any questions, please contact [bold magenta]lixingzee@gmail.com[/bold magenta]')
     print('[bold cyan]Thank you for using.[/bold cyan]')
 
-    
+
+
+@app.command()
+def gffstat(gff3_file: Path = typer.Argument(...,
+                                    help="input your target gff3 file"),
+            output_dir: Path = typer.Argument(...,
+                                    help="output directory")):
+    'Format conversion and various information statistics of genome annotation file gff'
+    fn = gff3_file
+    outdir = output_dir
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
+
+    out = open(f"{outdir}/gff.stat", "w")
+    if gff3_file:
+        stat_dict = gff_stat(fn, outdir)
+        name = os.path.basename(fn)
+        data = {name: stat_dict}
+        names = [name]
+        #plot_image(names, data, outdir)
+        out.write("""
+Number of gene	\tAverage gene length(bp)	\tAverage CDS length(bp)	\tAverage exons per gene	\tAverage exon length(bp)	\tAverage introns per gene	\tAverage intro length(bp)
+""")
+        out.write(stat2str(stat_dict))
+        plot_image(names, data, outdir)
+        out.close()
+
 
 # end=time.perf_counter()
 # print('Running time: %s Seconds'%(end-start))   
+
+
 
 if __name__ == "__main__":
     app()
